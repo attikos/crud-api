@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto'
 import { IUser, TUserPost } from './types'
 import { checkUuid } from './common-helpers'
 
-export const users: Record<string, IUser> = {}
+// export const users: Record<string, IUser> = {}
 
 export class User implements IUser {
     id: string
@@ -18,7 +18,7 @@ export class User implements IUser {
     }
 }
 
-export const parseAndGetUser = (url: string) : [IUser|null, string|null] => {
+export const parseAndGetUser = (url: string, users: Record<string, IUser>) : [IUser|null, string|null] => {
     const urlChunks: string[] = url.split('/')
     const userId: string = urlChunks[urlChunks.length - 1]
 
@@ -29,7 +29,12 @@ export const parseAndGetUser = (url: string) : [IUser|null, string|null] => {
     return [users[userId], null]
 }
 
-export const createOrUpdateUser = (data: TUserPost, id?: string): string|void => {
+export const createOrUpdateUser = (
+    data: TUserPost,
+    users: Record<string, IUser>,
+    updateUser: (users: Record<string, IUser>) => void,
+    id?: string
+): string|void => {
     const {
         username,
         age,
@@ -53,21 +58,9 @@ export const createOrUpdateUser = (data: TUserPost, id?: string): string|void =>
     }
 
     if (id) {
-        const userUpdate: Partial<IUser> = {};
+        users[id] = {id, username, age, hobbies}
 
-        if (username) {
-            userUpdate.username = username
-        }
-
-        if (age) {
-            userUpdate.age = age
-        }
-
-        if (hobbies) {
-            userUpdate.hobbies = hobbies
-        }
-
-        users[id] = {...users[id], username, age, hobbies}
+        updateUser(users)
 
         return;
     }
@@ -75,5 +68,7 @@ export const createOrUpdateUser = (data: TUserPost, id?: string): string|void =>
     const newUser = new User(username, age, hobbies)
     users[newUser.id] = newUser
 
-    return;
+    updateUser(users)
+
+    return
 }

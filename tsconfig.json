@@ -22,9 +22,11 @@
         "noFallthroughCasesInSwitch": true,
         "moduleResolution": "node",
         "baseUrl": ".",
+        "types": ["node"],
         "paths": {
             "*": [
-                "node_modules/*"]
+                "node_modules/*"
+            ]
         },
         "rootDirs": [
             "."

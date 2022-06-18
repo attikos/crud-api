@@ -10,3 +10,7 @@ export type TUserPost = {
     age: number
     hobbies: string[]
 }
+
+export type TState = {
+    users: Record<string, IUser>
+}
