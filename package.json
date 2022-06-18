@@ -8,8 +8,8 @@
         "auto-compile": "tsc -w -p tsconfig.json",
         "compile": "tsc -p tsconfig.json",
         "start:dev": "nodemon index.ts",
-        "start:prod": "ts-node index.ts",
-        "start:multi": "ts-node multi-server.ts"
+        "start:prod": "npm run compile && cross-env NODE_ENV=production node dist/index.js",
+        "start:multi": "npm run compile && cross-env NODE_ENV=production node dist/multi-server.js"
     },
     "repository": {
         "type": "git",
@@ -23,6 +23,7 @@
     "homepage": "https://github.com/attikos/crud-api#readme",
     "devDependencies": {
         "@types/node": "^16",
+        "cross-env": "^7.0.3",
         "dotenv": "^16.0.1",
         "nodemon": "^2.0.16",
         "ts-node": "^10.8.1",
