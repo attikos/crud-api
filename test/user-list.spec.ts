@@ -1,5 +1,7 @@
 import request from 'supertest'
 import { server, updateUser } from '../index'
+import { v4 } from 'uuid'
+import { IUser } from '../src/types'
 
 describe('User list', () => {
     let requestReady = request(server)
@@ -8,32 +10,24 @@ describe('User list', () => {
         updateUser({});
     })
 
-    afterAll(async () => {
-        await new Promise(resolve => setTimeout(() => resolve(true), 500)) // avoid jest open handle error
-        requestReady
-    })
-
     it('create 3 users and check count of result', async () => {
-        const user = {
+        const createUser = (): IUser => ({
+            id: v4(),
             username: 'John Smith',
             age: 32,
             hobbies: ['games']
-        }
+        })
 
-        await requestReady
-            .post('/api/users')
-            .send(user)
+        const userList = [createUser(), createUser(), createUser()]
 
-        await requestReady
-            .post('/api/users')
-            .send(user)
-
-        await requestReady
-            .post('/api/users')
-            .send(user)
+        updateUser({
+            [userList[0].id] : userList[0],
+            [userList[1].id] : userList[1],
+            [userList[2].id] : userList[2],
+        })
 
         const res = await requestReady
-                .get('/api/users')
+            .get('/api/users')
 
         expect(res.statusCode).toBe(200)
         expect(res.body).toHaveLength(3)

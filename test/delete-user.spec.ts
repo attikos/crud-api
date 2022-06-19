@@ -10,10 +10,6 @@ describe('Delete user', () => {
         updateUser({});
     })
 
-    afterAll(async () => {
-        await new Promise(resolve => setTimeout(() => resolve(true), 500)) // avoid jest open handle error
-    })
-
     it('delete user not found', async () => {
         const user : IUser = {
             id: v4(),

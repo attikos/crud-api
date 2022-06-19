@@ -8,10 +8,6 @@ describe('New user with error', () => {
         updateUser({});
     })
 
-    afterAll(async () => {
-        await new Promise(resolve => setTimeout(() => resolve(true), 500)) // avoid jest open handle error
-    })
-
     it('error create user without hobbies', async () => {
         const user = {
             username: 'John Smith',

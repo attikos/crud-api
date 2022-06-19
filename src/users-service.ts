@@ -17,7 +17,7 @@ export class User implements IUser {
 
 export const parseAndGetUser = (url: string, users: Record<string, IUser>) : [IUser|null, string|null] => {
     const urlChunks: string[] = url.split('/')
-    const userId: string = urlChunks[urlChunks.length - 1]
+    const userId: string = urlChunks[3]
 
     if (!userId || !validate(userId)) {
         return [null, 'Invalid uuid. Please input correct uuid']

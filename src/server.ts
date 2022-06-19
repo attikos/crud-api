@@ -17,7 +17,7 @@ export const runServer = (state: TState, updateUser: (users: Record<string, IUse
         const url = req.url?.replace(/\/$/, '') || ''
         const method = req.method || ''
 
-        if (method === 'GET' && /^\/api\/users\/.+$/.test(url)) {
+        if (method === 'GET' && /^\/api\/users\/([\w-]+)$/.test(url)) {
             const [user, error] = parseAndGetUser(url, state.users)
 
             if (error) {
@@ -30,7 +30,7 @@ export const runServer = (state: TState, updateUser: (users: Record<string, IUse
 
             return render(res, 404, { error: 'User not exist' })
         }
-        else if (method === 'PUT' && /^\/api\/users\/.+$/.test(url)) {
+        else if (method === 'PUT' && /^\/api\/users\/([\w-]+)$/.test(url)) {
             const [user, error] = parseAndGetUser(url, state.users)
 
             if (error) {
@@ -57,7 +57,7 @@ export const runServer = (state: TState, updateUser: (users: Record<string, IUse
 
             return render(res, 404, { error: 'User not exist' })
         }
-        else if (method === 'DELETE' && /^\/api\/users\/.+$/.test(url)) {
+        else if (method === 'DELETE' && /^\/api\/users\/([\w-]+)$/.test(url)) {
             const [user, error] = parseAndGetUser(url, state.users)
 
             if (error) {

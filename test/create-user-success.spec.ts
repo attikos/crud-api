@@ -8,16 +8,12 @@ describe('New user is success', () => {
         updateUser({});
     })
 
-    afterAll(async () => {
-        await new Promise(resolve => setTimeout(() => resolve(true), 500)) // avoid jest open handle error
-        requestReady
-    })
-
     it('Empty user list', async () => {
         const res = await requestReady
             .get('/api/users')
 
         expect(res.statusCode).toBe(200)
+        expect(res.body).toHaveLength(0)
     })
 
     it('success create user', async () => {
@@ -33,5 +29,15 @@ describe('New user is success', () => {
 
         expect(res.statusCode).toBe(201)
         expect(res.body.error).toBe(undefined)
+
+        const resUserList = await requestReady
+            .get('/api/users')
+
+        const {id} = resUserList.body[0];
+
+        const resUser = await requestReady
+            .get(`/api/users/${id}`)
+
+        expect(resUser.body).toEqual({ ...user, id })
     })
 })
