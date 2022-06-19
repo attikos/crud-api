@@ -6,8 +6,8 @@ const state = {
     users,
 }
 
-const updateUser = (users: Record<string, IUser>) => {
+export const updateUser = (users: Record<string, IUser>) => {
     state.users = users
 }
 
-runServer(state, updateUser)
+export const server = runServer(state, updateUser)

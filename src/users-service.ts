@@ -1,8 +1,5 @@
-import { randomUUID } from 'crypto'
+import { v4, validate } from 'uuid'
 import { IUser, TUserPost } from './types'
-import { checkUuid } from './common-helpers'
-
-// export const users: Record<string, IUser> = {}
 
 export class User implements IUser {
     id: string
@@ -11,7 +8,7 @@ export class User implements IUser {
     hobbies: string[]
 
     constructor(username: string, age: number, hobbies: string[]) {
-        this.id = randomUUID()
+        this.id = v4()
         this.username = username
         this.age = age
         this.hobbies = hobbies
@@ -22,7 +19,7 @@ export const parseAndGetUser = (url: string, users: Record<string, IUser>) : [IU
     const urlChunks: string[] = url.split('/')
     const userId: string = urlChunks[urlChunks.length - 1]
 
-    if (!userId || !checkUuid(userId)) {
+    if (!userId || !validate(userId)) {
         return [null, 'Invalid uuid. Please input correct uuid']
     }
 
@@ -62,13 +59,11 @@ export const createOrUpdateUser = (
 
         updateUser(users)
 
-        return;
+        return
     }
 
     const newUser = new User(username, age, hobbies)
     users[newUser.id] = newUser
 
     updateUser(users)
-
-    return
 }

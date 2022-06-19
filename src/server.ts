@@ -103,7 +103,11 @@ export const runServer = (state: TState, updateUser: (users: Record<string, IUse
         }
     })
 
-    server.listen(PORT, undefined, () => {
-        console.log(`Server is listening on port ${PORT}`)
-    })
+    if (process.env.NODE_ENV !== 'testing') {
+        server.listen(PORT, undefined, () => {
+            console.log(`Server is listening on port ${PORT}`)
+        })
+    }
+
+    return server
 }
